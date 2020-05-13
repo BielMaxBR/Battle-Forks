@@ -67,26 +67,21 @@ function create ()
         frameRate: 10,
         repeat: -1
     });
-    // this.physics.add.collider(player, platforms);
+    this.physics.add.collider(forks, platforms);
 }
 
 var velocity = 100
+
 function update ()
 {
     // console.log(player.x)
     if (cursors.left.isDown)
     {
         console.log('aperted')
-        forks.create(790, 512, 'dude')
-        // forks.children.iterate( function (fork) {
-        //     // fork.enableBody(true, fork.x, 0, true, true);
-            
-        //     fork.setVelocityX(velocity*(-1));
-        //     fork.anims.play('walking', true);
-        //     if (fork.x < 0) {
-        //         fork.x = 800
-        //     }
-
+        function a()  {
+            forks.create(790, 512, 'dude')
+        }
+        a()
     }
 
     forks.children.iterate( function (fork) {
@@ -95,6 +90,8 @@ function update ()
         if (fork.x < 0) {
             fork.x = 800
         }
+        fork.y = 515
     })
     
 }
+
