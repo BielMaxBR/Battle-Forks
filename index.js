@@ -8,5 +8,5 @@ const config = {
     scene: [Battle]
 }
 window.onload = () => {
-    let game = new Phaser.Game(config)
+    var game = new Phaser.Game(config)
 }
