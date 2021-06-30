@@ -1,4 +1,4 @@
-import Battle from './src/Scenes/Battle.js'
+import Battle from './src/scenes/Battle.js'
 
 const config = {
     type: Phaser.WEBGL,
