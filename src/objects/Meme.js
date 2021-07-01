@@ -1,12 +1,14 @@
-import Container from '../utils/Container.js'
+import Container from './Container.js'
+import Sprite from './Sprite.js'
 
 export default class Meme extends Phaser.GameObjects.GameObject {
-    constructor(scene, name) {
-        super(scene, name)
-        // this.children = new Container(scene, this.x, this.y)
+    constructor({ scene, name, spriteConfig }) {
+        super(scene, 'sprite')
+        this.name = name
+        this.children = new Container(scene, 0, 0)
 
-        // this.sprite = scene.add.sprite(this.x, this.y, 'test')
-        // this.children.add(this.sprite)
+        this.sprite = new Sprite(scene, spriteConfig)
+        this.children.add(this.sprite)
 
         // this.sprite.anims.create({
         //     key: 'walk',
@@ -29,6 +31,7 @@ export default class Meme extends Phaser.GameObjects.GameObject {
         // criar o gerenciador de animações
         // criar os eventos de ataque
         // criar o sistema de morte e delete
+        this.sprite.play('walk')
     }
     update() {
         this.x += 1
