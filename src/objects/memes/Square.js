@@ -15,19 +15,19 @@ export default class Square extends Meme {
                             key: 'walk',
                             start: 0,
                             end: 3
-                    },
+                        },
                         {
                             key: 'idle',
                             start: 10,
                             end: 17
-                    },
+                        },
                         {
                             key: 'attack',
                             start: 4,
                             end: 9
-                    },
+                        },
 
-                ]
+                    ]
                 }
             }
         )
