@@ -32,7 +32,7 @@ export default class Meme extends Phaser.GameObjects.GameObject {
         // criar os eventos de ataque
         // criar o sistema de morte e delete
         this.sprite.play('walk')
-        console.log(this.sprite.anims.currentAnim)
+        
     }
     update() {
         if (this.x <= 500) {
