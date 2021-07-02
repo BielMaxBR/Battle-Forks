@@ -1,7 +1,7 @@
 import Container from './Container.js'
 import Sprite from './Sprite.js'
 
-export default class Meme extends Phaser.GameObjects.GameObject {
+export default class Meme extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, name, spriteConfig) {
         super(scene, 'sprite')
         this.name = name
