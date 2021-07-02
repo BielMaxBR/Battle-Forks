@@ -1,3 +1,4 @@
+console.log("a")
 import Battle from './src/scenes/Battle.js'
 
 const config = {

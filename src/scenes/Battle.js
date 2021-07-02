@@ -1,4 +1,4 @@
-import Square from '../objects/Memes/Square.js'
+import Square from '../objects/memes/Square.js'
 
 export default class Battle extends Phaser.Scene {
     constructor() {

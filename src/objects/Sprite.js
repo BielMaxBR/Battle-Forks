@@ -3,10 +3,10 @@ export default class Sprite extends Phaser.GameObjects.Sprite {
         super(scene, 0, 0, texture, frames)
         scene.add.existing(this)
 
-        this.#createAnimations(animsConfig)
+        this.createAnimations(texture, animsConfig)
     }
-    #createAnimations({ frameRate, anims }) {
-        for (anim of anims) {
+    createAnimations(texture, { frameRate, anims }) {
+        for (const anim of anims) {
             this.anims.create({
                 key: anim.key,
                 frames: this.anims.generateFrameNames(texture, {
@@ -15,9 +15,8 @@ export default class Sprite extends Phaser.GameObjects.Sprite {
                 }),
                 frameRate,
                 repeat: -1
-                
+
             })
         }
     }
-
 }

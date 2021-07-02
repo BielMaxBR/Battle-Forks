@@ -2,7 +2,7 @@ import Container from './Container.js'
 import Sprite from './Sprite.js'
 
 export default class Meme extends Phaser.GameObjects.GameObject {
-    constructor({ scene, name, spriteConfig }) {
+    constructor(scene, name, spriteConfig) {
         super(scene, 'sprite')
         this.name = name
         this.children = new Container(scene, 0, 0)
@@ -32,11 +32,17 @@ export default class Meme extends Phaser.GameObjects.GameObject {
         // criar os eventos de ataque
         // criar o sistema de morte e delete
         this.sprite.play('walk')
+        console.log(this.sprite.anims.currentAnim)
     }
     update() {
-        this.x += 1
+        if (this.x <= 500) {
+            this.x += 1
+        } else if(this.sprite.anims.currentAnim.key != 'idle') {
+            this.sprite.play('idle')
+        } 
 
         this.children.x = this.x
         this.children.y = this.y
+
     }
 }
