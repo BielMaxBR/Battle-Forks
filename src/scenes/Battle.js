@@ -13,8 +13,6 @@ export default class Battle extends Phaser.Scene {
         })
     }
     create() {
-        this.game.fps = 30
-        console.log(this.add.rectangle)
         this.meme = new Square(this)
         this.meme.x = 64
         this.meme.y = 64
