@@ -20,7 +20,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.play('walk')
         // criar os eventos de ataque
         // criar o sistema de morte e delete
-        console.log(this.body)
+        console.log(this.body.touching)
     }
     update() {
         this.body.setVelocity(0);
