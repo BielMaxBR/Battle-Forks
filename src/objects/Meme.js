@@ -3,20 +3,24 @@ import Container from './Container.js'
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, name, { texture, frames, animsConfig }) {
         super(scene, 0, 0, texture, frames)
+        
         scene.physics.add.existing(this, false)
         scene.add.existing(this)
-        this.setOrigin(0)
+
+        this.body.offset.y = 32
+        this.body.height = 32
+        
         this.name = name
         this.children = new Container(scene, 0, 0)
 
         // criar o sprite e suas animações
-        this.#createAnimations(texture, animsConfig)
         // criar os eventos de colisão
+        this.#createAnimations(texture, animsConfig)
         // criar o gerenciador de animações
+        this.play('walk')
         // criar os eventos de ataque
         // criar o sistema de morte e delete
-        this.play('walk')
-        console.log(this)
+        console.log(this.body)
     }
     update() {
         this.body.setVelocity(0);
