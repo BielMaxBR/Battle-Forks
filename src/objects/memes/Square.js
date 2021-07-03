@@ -1,10 +1,10 @@
 import Meme from "../Meme.js";
 
 export default class Square extends Meme {
-    constructor(scene) {
+    constructor(scene, x, y) {
         super(
             scene,
-            'square',
+            x, y,
             {
                 texture: 'test',
                 frames: 4,

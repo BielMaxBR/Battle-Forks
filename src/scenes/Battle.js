@@ -15,15 +15,11 @@ export default class Battle extends Phaser.Scene {
     }
     create() {
 
-        this.meme = new Square(this)
-        this.meme.x = 64
-        this.meme.y = 64
+        this.meme = new Square(this,64,64)
 
         this.algo = this.add.zone(500, 64, 64, 64)
         this.teams.p2.add(this.algo)
         this.physics.add.existing(this.algo, true)
-        this.algo.x = 500
-        this.algo.y = 64
 
         console.log('batalha iniciada')
     }
