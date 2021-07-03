@@ -10,9 +10,13 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.offset.y = 32
         this.body.height = 32
         
+        this.attackZone = scene.add.zone(this.x+50, this.y, this.body.width, 32)
+        scene.physics.add.existing(this.attackZone, false)
+        
+
         this.name = name
         // this.children = new Container(scene, 0, 0)
-        
+
         // criar o sprite e suas animações
         this.#createAnimations(texture, animsConfig)
         // criar os eventos de colisão
@@ -23,6 +27,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         // criar o sistema de morte e delete
     }
     update() {
+        this.attackZone
         this.body.setVelocity(0);
         if (this.x < 500) {
             this.body.setVelocityX(100)
