@@ -1,36 +1,19 @@
 body {
-  background: #DDDDDD;
+  background: #333333;
   margin: 0;
   padding: 0;
-  /* overflow-x: scroll;
+  overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  display: flex; */
+  display: flex;
 }
 
 canvas {
-  /*background: #000;*/
+  background: #000;
+  image-rendering: pixelated;
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  image-rendering: pixelated;
-
-  border: 2px solid grey;
-}
-
-@media(max-width: 500px){
-  canvas {
-    position: relative;
-    margin-top: 1%;
-    width: 99%;
-  }
-}
-@media(min-width: 501px){
-  canvas {
-    position: relative;
-    margin-top: 5%;
-    width: 70%;
-  }
 }

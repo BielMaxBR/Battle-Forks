@@ -13,6 +13,7 @@ export default class Battle extends Phaser.Scene {
         })
     }
     create() {
+        console.log(this)
         this.meme = new Square(this)
         this.meme.x = 64
         this.meme.y = 64
