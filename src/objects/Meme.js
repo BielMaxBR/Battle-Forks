@@ -1,4 +1,4 @@
-//import Container from './Container.js'
+import enums from "../utils/enums.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, x = 0, y = 0, team, { texture, frames, animsConfig }) {
@@ -7,16 +7,15 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.y = y
 
         this.team = team
+        this.velocity = 60
 
         scene.physics.add.existing(this, false)
         scene.add.existing(this)
 
-        //this.children = new Container(scene, 0, 0)
+        this.state = 1
 
         this.body.offset.y = 32
         this.body.height = 32
-
-
 
         // criar o sprite e suas animações
         this.createAnimations(texture, animsConfig)
@@ -32,40 +31,59 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             this.colidindo = false
         })
         // criar o gerenciador de animações
-        this.play('walk')
         // criar os eventos de ataque
         // criar o sistema de morte e delete
-
+        console.log(this)
     }
     update() {
         this.checkOverlap()
-        this.move()
+        this.checkMovement()
+        this.checkAnimation()
     }
 
     move() {
         this.body.setVelocity(0)
 
-        if (!this.colidindo) {
-            this.body.setVelocityX(100)
-            
-        } else if (this.anims.currentAnim.key != 'idle') {
-            this.attackZone.Enemys[0].destroy()
-            this.play('idle')
-        }
+        // if (!this.colidindo) {
+        this.body.setVelocityX(this.velocity)
+
+        // } else if (this.anims.currentAnim.key != 'idle') {
+        //     this.attackZone.Enemys[0].destroy()
+        //     this.play('idle')
+        // }
         this.attackZone.body.setVelocity(this.body.velocity.x, this.body.velocity.y)
     }
 
+    checkMovement() {
+        switch (this.state) {
+            case enums.WALK:
+                this.move()
+                break
+        }
+    }
+
+    checkAnimation() {
+        switch (this.state) {
+            case enums.WALK:
+                if (this.anims.currentAnim == null || this.anims.currentAnim.key != 'walk') {
+                    this.play('walk')
+                }
+                break
+        }
+    }
+
     checkOverlap() {
-        var bodyList = this.scene.physics.overlapRect(this.attackZone.x, this.attackZone.y, this.attackZone.body.width-this.attackZone.body.width/2, this.attackZone.body.height)
+        var bodyList = this.scene.physics.overlapRect(this.attackZone.x, this.attackZone.y, this.attackZone.body.width - this.attackZone.body.width / 2, this.attackZone.body.height)
         var objectList = []
 
         bodyList.forEach((body) => {
             const obj = body.gameObject
+
             if (obj.team) {
+
                 if (obj.team != this.team) {
                     objectList.push(obj)
                 }
-
             }
 
         })
