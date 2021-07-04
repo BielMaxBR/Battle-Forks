@@ -1,5 +1,5 @@
 //import Container from './Container.js'
-var colidindo = false
+
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, x = 0, y = 0, { texture, frames, animsConfig }) {
         super(scene, 0, 0, texture, frames)
@@ -17,28 +17,49 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this.attackZone, false)
 
         // criar o sprite e suas animações
-        this.#createAnimations(texture, animsConfig)
+        this.createAnimations(texture, animsConfig)
         // criar os eventos de colisão
-        scene.physics.add.overlap(this.attackZone, scene.teams.p2, this.overlapCallback, null, scene)
+        scene.physics.add.overlap(this.attackZone, scene.teams.p2)
+
+        this.attackZone.on('overlapstart', () => {
+            this.colidindo = true
+        })
+        this.attackZone.on('overlapend', () => {
+            this.colidindo = false
+        })
         // criar o gerenciador de animações
         this.play('walk')
         // criar os eventos de ataque
         // criar o sistema de morte e delete
+
     }
     update() {
-        this.body.setVelocity(0);
-        if (!colidindo) {
+        this.checkOverlap()
+        this.move()
+
+    }
+
+    move() {
+        this.body.setVelocity(0)
+
+        if (!this.colidindo) {
             this.body.setVelocityX(100)
+
         } else if (this.anims.currentAnim.key != 'idle') {
             this.play('idle')
         }
         this.attackZone.body.setVelocity(this.body.velocity.x, this.body.velocity.y)
-        colidindo = false
     }
-    overlapCallback(thisMeme, outro) {
-        colidindo = true
+
+    checkOverlap() {
+        var touching = !this.attackZone.body.touching.none
+        var wasTouching = !this.attackZone.body.wasTouching.none
+        
+        if (touching && !wasTouching) this.attackZone.emit("overlapstart")
+        else if (!touching && wasTouching) this.attackZone.emit("overlapend")
     }
-    #createAnimations(texture, { frameRate, anims }) {
+
+    createAnimations(texture, { frameRate, anims }) {
         for (const anim of anims) {
             this.anims.create({
                 key: anim.key,
