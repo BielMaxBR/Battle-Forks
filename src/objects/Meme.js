@@ -1,10 +1,13 @@
 //import Container from './Container.js'
 
 export default class Meme extends Phaser.GameObjects.Sprite {
-    constructor(scene, x = 0, y = 0, { texture, frames, animsConfig }) {
+    constructor(scene, x = 0, y = 0, team, { texture, frames, animsConfig }) {
         super(scene, 0, 0, texture, frames)
         this.x = x
         this.y = y
+
+        this.team = team
+
         scene.physics.add.existing(this, false)
         scene.add.existing(this)
 
@@ -13,13 +16,14 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.offset.y = 32
         this.body.height = 32
 
-        this.attackZone = scene.add.zone(this.x + this.width, this.y, this.body.width, 32)
-        scene.physics.add.existing(this.attackZone, false)
+
 
         // criar o sprite e suas animações
         this.createAnimations(texture, animsConfig)
         // criar os eventos de colisão
-        scene.physics.add.overlap(this.attackZone, scene.teams.p2)
+        this.attackZone = scene.add.zone(this.x + this.width, this.y, this.body.width, 32)
+        scene.physics.add.existing(this.attackZone)
+        this.attackZone.Enemys = []
 
         this.attackZone.on('overlapstart', () => {
             this.colidindo = true
@@ -36,7 +40,6 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     update() {
         this.checkOverlap()
         this.move()
-
     }
 
     move() {
@@ -44,19 +47,33 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         if (!this.colidindo) {
             this.body.setVelocityX(100)
-
+            
         } else if (this.anims.currentAnim.key != 'idle') {
+            this.attackZone.Enemys[0].destroy()
             this.play('idle')
         }
         this.attackZone.body.setVelocity(this.body.velocity.x, this.body.velocity.y)
     }
 
     checkOverlap() {
-        var touching = !this.attackZone.body.touching.none
-        var wasTouching = !this.attackZone.body.wasTouching.none
-        
-        if (touching && !wasTouching) this.attackZone.emit("overlapstart")
-        else if (!touching && wasTouching) this.attackZone.emit("overlapend")
+        var bodyList = this.scene.physics.overlapRect(this.attackZone.x, this.attackZone.y, this.attackZone.body.width-this.attackZone.body.width/2, this.attackZone.body.height)
+        var objectList = []
+
+        bodyList.forEach((body) => {
+            const obj = body.gameObject
+            if (obj.team) {
+                if (obj.team != this.team) {
+                    objectList.push(obj)
+                }
+
+            }
+
+        })
+
+        this.attackZone.Enemys = objectList
+
+        if (objectList.length > 0) this.attackZone.emit("overlapstart")
+        else this.attackZone.emit("overlapend")
     }
 
     createAnimations(texture, { frameRate, anims }) {
