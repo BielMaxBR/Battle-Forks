@@ -2,9 +2,7 @@ import enums from "../utils/enums.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, x = 0, y = 0, team, { texture, frames, animsConfig }) {
-        super(scene, 0, 0, texture, frames)
-        this.x = x
-        this.y = y
+        super(scene, x, y, texture, frames)
 
         this.team = team
         this.velocity = 60
@@ -33,8 +31,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         // criar o gerenciador de animações
         // criar os eventos de ataque
         // criar o sistema de morte e delete
-        console.log(this.getAnimation(this.anims.currentAnim.key, true))
     }
+
     update() {
         this.checkOverlap()
         this.checkMovement()
@@ -44,13 +42,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     move() {
         this.body.setVelocity(0)
 
-        // if (!this.colidindo) {
         this.body.setVelocityX(this.velocity)
 
-        // } else if (this.anims.currentAnim.key != 'idle') {
-        //     this.attackZone.Enemys[0].destroy()
-        //     this.play('idle')
-        // }
         this.attackZone.body.setVelocity(this.body.velocity.x, this.body.velocity.y)
     }
 
@@ -66,19 +59,17 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         const currentAnimId = this.getAnimation(this.anims.currentAnim.key, true).id
 
         if (this.state != currentAnimId) {
-            
+
             this.play(this.getAnimation(this.state, false).name)
         }
     }
 
     getAnimation(value, isName) {
-        return Object.values(enums).find((anim) => {
-            if (!isName) {
-                return anim.id == value
-            } else {
-                return anim.name == value
-            }
-        })
+        return Object.values(enums).find(
+            anim => {
+                return (isName ? anim.name : anim.id) == value
+
+            })
     }
 
     checkOverlap() {
