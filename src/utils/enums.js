@@ -1,6 +1,6 @@
 export default {
-    IDLE: 0,
-    WALK: 1,
-    STOMPED: 2,
-    ATTACK: 3
+    IDLE: { id: 0, name: 'idle' },
+    WALK: { id: 1, name: 'walk' },
+    STOMPED: { id: 2, name: 'stomped' },
+    ATTACK: { id: 3, name: 'attack' }
 }

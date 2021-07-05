@@ -33,7 +33,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         // criar o gerenciador de animações
         // criar os eventos de ataque
         // criar o sistema de morte e delete
-        console.log(this)
+        console.log(this.getAnimation(this.anims.currentAnim.key, true))
     }
     update() {
         this.checkOverlap()
@@ -56,20 +56,29 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
     checkMovement() {
         switch (this.state) {
-            case enums.WALK:
+            case enums.WALK.id:
                 this.move()
                 break
         }
     }
 
     checkAnimation() {
-        switch (this.state) {
-            case enums.WALK:
-                if (this.anims.currentAnim == null || this.anims.currentAnim.key != 'walk') {
-                    this.play('walk')
-                }
-                break
+        const currentAnimId = this.getAnimation(this.anims.currentAnim.key, true).id
+
+        if (this.state != currentAnimId) {
+            
+            this.play(this.getAnimation(this.state, false).name)
         }
+    }
+
+    getAnimation(value, isName) {
+        return Object.values(enums).find((anim) => {
+            if (!isName) {
+                return anim.id == value
+            } else {
+                return anim.name == value
+            }
+        })
     }
 
     checkOverlap() {
@@ -107,5 +116,6 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
             })
         }
+        this.play('walk')
     }
 }
