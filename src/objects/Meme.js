@@ -1,11 +1,15 @@
 import enums from "../utils/enums.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
-    constructor(scene, x = 0, y = 0, team, { texture, frames, animsConfig }) {
+    constructor(scene, x = 0, y = 0, team, combatConfig, { texture, frames, animsConfig }) {
         super(scene, x, y, texture, frames)
 
         this.team = team
         this.velocity = 60
+
+        this.combatConfig = combatConfig
+
+        this.canAttack = true
 
         scene.physics.add.existing(this, false)
         scene.add.existing(this)
@@ -30,17 +34,57 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         })
         // criar o gerenciador de animações
         // criar os eventos de ataque
+        this.on('animationrepeat', anim => {
+            if (anim.key == enums.ATTACK.name) {
+                this.state = enums.WALK.id
+
+                this.scene.time.addEvent({
+                    delay: this.combatConfig.cooldown * 1000,
+                    callback: () => this.canAttack = true,
+                    loop: false,
+                })
+            }
+        })
+        this.on('animationupdate', (anim, frame) => {
+            if (anim.key == enums.ATTACK.name) {
+                if (this.combatConfig.attackFrames.indexOf(+frame.textureFrame) != -1) {
+                    this.attack()
+                }
+            }
+        })
         // criar o sistema de morte e delete
     }
 
     update() {
+        this.updateState()
         this.checkOverlap()
         this.checkMovement()
         this.checkAnimation()
     }
 
+    updateState() {
+        if (!this.test) this.test = this.scene.input.keyboard.addKey("D")
+        if (this.test.isDown && this.canAttack) {
+            this.attack()
+        }
+        if (this.colidindo && this.canAttack) {
+            this.canAttack = false
+            this.state = enums.ATTACK.id
+        }
+    }
+
+    attack() {
+        switch (this.combatConfig.type) {
+            case 'single':
+                const enemy = this.attackZone.Enemys[0]
+                
+                break
+        }
+    }
+
     move() {
         this.body.setVelocity(0)
+        this.attackZone.body.setVelocity(0)
 
         this.body.setVelocityX(this.velocity)
 
@@ -52,6 +96,11 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             case enums.WALK.id:
                 this.move()
                 break
+            case enums.STOMPED.id:
+                break
+            default:
+                this.body.setVelocity(0)
+                this.attackZone.body.setVelocity(0)
         }
     }
 
@@ -87,7 +136,17 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             }
 
         })
-
+        objectList = objectList.sort((a, b) => {
+            var distA = Phaser.Math.Distance.BetweenPoints(this, a)
+            var distB = Phaser.Math.Distance.BetweenPoints(this, b)
+            if (distA < distB) {
+                return 1
+            }
+            if (distA > distB) {
+                return -1
+            }
+            return 0
+        })
         this.attackZone.Enemys = objectList
 
         if (objectList.length > 0) this.attackZone.emit("overlapstart")

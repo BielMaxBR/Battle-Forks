@@ -14,7 +14,6 @@ export default class Battle extends Phaser.Scene {
         this.createTeams()
     }
     create() {
-
         this.meme = new Square(this, 64, 64, 'p1')
 
         this.algo = this.add.zone(500, 64, 64, 64)

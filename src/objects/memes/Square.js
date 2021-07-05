@@ -7,6 +7,14 @@ export default class Square extends Meme {
             x, y,
             team,
             {
+                attackFrames: [8],
+                damage: 5,
+                life: 10,
+                stunPoints: [5],
+                cooldown: 2,
+                type: 'single'
+            },
+            {
                 texture: 'test',
                 frames: 4,
                 animsConfig: {
