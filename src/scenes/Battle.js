@@ -5,6 +5,10 @@ export default class Battle extends Phaser.Scene {
     constructor() {
         super("Battle")
     }
+    // criar o sistema pra guardar o time e o preço
+    // criar o gerador de unidades de acordo com a mão
+
+    // converter pro lado backend da força
     create() {
         this.createTeams()
         this.meme = new Square(this, 64, 64, 'p1')
