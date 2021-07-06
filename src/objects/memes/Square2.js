@@ -14,7 +14,7 @@ export default class Square extends Meme {
                 stunPoints: [5, 7],
                 cooldown: 2500,
                 type: 'single',
-                velocity: 80,
+                velocity: 50,
                 attackSpeed: 800
             },
             {

@@ -3,31 +3,31 @@ import enums from "../utils/enums.js"
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, x = 0, y = 0, team, combatConfig, spriteConfig) {
         super(scene, x, y, spriteConfig.texture)
-        
-        this.setAnimationAndCallbacks(spriteConfig)
+
         this.createTeamSetDirection(team)
+        this.setAnimationAndCallbacks(spriteConfig)
         this.createCombatConfig(combatConfig)
         this.setStateAndPhysics()
         this.createAttackZone()
-       
+
     }
-    
+
     createTeamSetDirection(team) {
         this.team = team
-        this.scene.teams[team].add(this)
-        
+        this.scene.teams[team].inGame.add(this)
+
         if (this.team == 'p1') {
             this.direction = 1
         } else {
             this.direction = -1
         }
     }
-    
-    setAnimationAndCallbacks({texture,frames, animsConfig}) {
+
+    setAnimationAndCallbacks({ texture, frames, animsConfig }) {
         this.createAnimations(texture, animsConfig)
 
         this.flipX = this.direction == -1 ? true : false
-        
+
         this.on('animationrepeat', anim => {
             if (anim.key == enums.ATTACK.name) {
                 this.state = enums.IDLE.id
@@ -46,8 +46,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
                 }
             }
         })
-        
-        
+
+
     }
 
     createCombatConfig(config) {
@@ -58,13 +58,13 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         this.canAttack = true
         this.isStuned = false
-        
+
         this.calcAttackFrameRate(config.attackSpeed)
     }
 
     setStateAndPhysics() {
         this.state = enums.WALK.id
-        
+
         this.scene.physics.add.existing(this, false)
         this.scene.add.existing(this)
 
@@ -72,15 +72,15 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.height = 32
 
     }
-    
+
     createAttackZone() {
         this.attackZone = this.scene.add.zone(this.x, this.y, this.combatConfig.range, 32)
         this.scene.physics.add.existing(this.attackZone)
-        
+
         this.attackZone.x += (this.attackZone.width / 2) * this.direction
-        
+
         this.attackZone.Enemys = []
-        
+
         this.attackZone.on('overlapstart', () => {
             this.colidindo = true
         })
@@ -95,12 +95,12 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.checkMovement()
         this.checkAnimation()
     }
-    
+
     calcAttackFrameRate(duration) {
         let anim = this.anims.anims.entries[enums.ATTACK.name]
         let frames = anim.frames.length
-        
-        anim.frameRate = 1000/duration*frames
+
+        anim.frameRate = 1000 / duration * frames
     }
 
     updateState() {
@@ -126,7 +126,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             case 'single':
                 const enemy = this.attackZone.Enemys[0]
                 if (!enemy) return
-                
+
                 enemy.takeDamage(this.combatConfig.damage)
                 break
         }
