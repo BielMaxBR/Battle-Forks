@@ -1,0 +1,19 @@
+body {
+  background: #333333;
+  margin: 0;
+  padding: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+canvas {
+  background: #000;
+  image-rendering: pixelated;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
