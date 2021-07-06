@@ -32,6 +32,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         // criar o sprite e suas animações
         this.createAnimations(texture, animsConfig)
+
         this.flipX = this.direction == -1 ? true : false
         // criar os eventos de colisão
         this.attackZone = scene.add.zone(this.x, this.y, this.combatConfig.range, 32)
@@ -52,7 +53,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
                 this.state = enums.IDLE.id
 
                 this.scene.time.addEvent({
-                    delay: this.combatConfig.cooldown * 1000,
+                    delay: this.combatConfig.cooldown,
                     callback: () => this.canAttack = true,
                     loop: false,
                 })
@@ -65,6 +66,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
                 }
             }
         })
+        this.calcAttackFrameRate(this.combatConfig.attackSpeed)
+        
         // criar o sistema de morte e delete
     }
 
@@ -73,6 +76,13 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.checkOverlap()
         this.checkMovement()
         this.checkAnimation()
+    }
+    
+    calcAttackFrameRate(duration) {
+        let anim = this.anims.anims.entries[enums.ATTACK.name]
+        let frames = anim.frames.length
+        
+        anim.frameRate = 1000/duration*frames
     }
 
     updateState() {
@@ -109,7 +119,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         const oldLife = this.actualLife
         this.actualLife -= damage
-        //console.log(this.team, ' ', this.actualLife)
+
         const stunCheck = this.checkIfStun(oldLife, this.actualLife)
 
         if (stunCheck[0]) this.stun(stunCheck[1])
@@ -132,7 +142,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.isStuned = true
         this.canAttack = false
         this.scene.time.addEvent({
-            delay: 900,
+            delay: 500,
             callback: () => {
                 if (toDeath) {
                     this.attackZone.destroy()
@@ -160,7 +170,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.setVelocity(0)
         this.attackZone.body.setVelocity(0)
 
-        const stunVel = 120 * -this.direction
+        const stunVel = 200 * -this.direction
 
 
         this.body.setVelocityX(stunVel)

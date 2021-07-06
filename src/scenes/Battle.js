@@ -22,13 +22,14 @@ export default class Battle extends Phaser.Scene {
         console.log('batalha iniciada')
     }
     update() {
-        for (const meme of this.teams.p1.getChildren()) {
-            meme.update()
-        }
-        for (const meme of this.teams.p2.getChildren()) {
-            meme.update()
-        }
+        this.teams.p1.children.iterate(this.updateMeme)
+        this.teams.p2.children.iterate(this.updateMeme)
     }
+
+    updateMeme(meme) {
+        meme.update()
+    }
+
     createTeams() {
         this.teams = {}
         this.teams.p1 = this.physics.add.group()
