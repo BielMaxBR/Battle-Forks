@@ -17,6 +17,6 @@ const config = {
         }
     }
 }
-window.onload = () => {
-    var game = new Phaser.Game(config)
-}
+document.addEventListener("DOMContentLoaded", () =>
+    new Phaser.Game(config)
+);
