@@ -22,7 +22,7 @@ export default class Loading extends Phaser.Scene {
 
             progress.destroy();
             console.log('%c Loading Complete', 'color:#55ff55;')
-            this.scene.start("Game")
+            this.scene.start("Battle")
         });
 
         this.load.setPath('../src/assets/');

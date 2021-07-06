@@ -15,7 +15,7 @@ export default class Battle extends Phaser.Scene {
 
         this.algo = new Square2(this, 500, 64, 'p2')
 
-        console.log('batalha iniciada')
+        console.log('%c batalha iniciada!', 'color:dodgerblue;')
     }
     update() {
         this.teams.p1.inGame.children.iterate(this.updateMeme)
