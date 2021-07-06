@@ -34,7 +34,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.createAnimations(texture, animsConfig)
         this.flipX = this.direction == -1 ? true : false
         // criar os eventos de colisão
-        this.attackZone = scene.add.zone(this.x, this.y, this.width, 32)
+        this.attackZone = scene.add.zone(this.x, this.y, this.combatConfig.range, 32)
         scene.physics.add.existing(this.attackZone)
         this.attackZone.x += (this.attackZone.width / 2) * this.direction
         this.attackZone.Enemys = []
@@ -78,15 +78,16 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     updateState() {
         if (this.isStuned) {
             this.state = enums.STUN.id
-        }
+        } else {
 
-        if (this.canAttack) {
-            if (this.colidindo) {
-                this.canAttack = false
-                this.state = enums.ATTACK.id
-            }
-            if (!this.colidindo) {
-                this.state = enums.WALK.id
+            if (this.canAttack) {
+                if (this.colidindo) {
+                    this.canAttack = false
+                    this.state = enums.ATTACK.id
+                }
+                if (!this.colidindo) {
+                    this.state = enums.WALK.id
+                }
             }
         }
 
@@ -96,6 +97,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         switch (this.combatConfig.type) {
             case 'single':
                 const enemy = this.attackZone.Enemys[0]
+                if (!enemy) return
+                //console.log('hit')
                 enemy.takeDamage(this.combatConfig.damage)
                 break
         }
@@ -106,7 +109,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         const oldLife = this.actualLife
         this.actualLife -= damage
-
+        //console.log(this.team, ' ', this.actualLife)
         const stunCheck = this.checkIfStun(oldLife, this.actualLife)
 
         if (stunCheck[0]) this.stun(stunCheck[1])
@@ -129,10 +132,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.isStuned = true
         this.canAttack = false
         this.scene.time.addEvent({
-            delay: 700,
+            delay: 900,
             callback: () => {
-                console.log('cabo')
-
                 if (toDeath) {
                     this.attackZone.destroy()
                     this.destroy()
@@ -140,7 +141,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
                 this.isStuned = false
                 this.canAttack = true
-                
+
             },
             loop: false
         })
@@ -159,7 +160,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.setVelocity(0)
         this.attackZone.body.setVelocity(0)
 
-        const stunVel = 60 * -this.direction
+        const stunVel = 120 * -this.direction
 
 
         this.body.setVelocityX(stunVel)

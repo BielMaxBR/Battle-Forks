@@ -8,19 +8,19 @@ export default class Square extends Meme {
             team,
             {
                 attackFrames: [8],
-                damage: 5,
-                range: 64,
-                life: 12,
-                stunPoints: [6],
-                cooldown: 1.5,
+                damage: 6,
+                range: 74,
+                life: 15,
+                stunPoints: [5, 7],
+                cooldown: 2.5,
                 type: 'single',
-                velocity: 90
+                velocity: 80
             },
             {
                 texture: 'test',
                 frames: 4,
                 animsConfig: {
-                    frameRate: 12,
+                    frameRate: 10,
                     anims: [
                         {
                             key: 'walk',

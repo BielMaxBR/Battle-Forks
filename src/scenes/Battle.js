@@ -1,4 +1,5 @@
 import Square from '../objects/memes/Square.js'
+import Square2 from '../objects/memes/Square2.js'
 
 export default class Battle extends Phaser.Scene {
     constructor() {
@@ -16,7 +17,7 @@ export default class Battle extends Phaser.Scene {
     create() {
         this.meme = new Square(this, 64, 64, 'p1')
 
-        this.algo = new Square(this, 500, 64, 'p2')
+        this.algo = new Square2(this, 500, 64, 'p2')
 
         console.log('batalha iniciada')
     }
