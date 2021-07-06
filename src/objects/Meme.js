@@ -5,11 +5,22 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frames)
 
         this.team = team
-        this.velocity = 60
+        scene.teams[team].add(this)
+        if (this.team == 'p1') {
+            this.direction = 1
+        } else {
+            this.direction = -1
+        }
 
         this.combatConfig = combatConfig
 
+        this.velocity = this.combatConfig.velocity * this.direction
+
+        this.actualLife = this.combatConfig.life
+
         this.canAttack = true
+
+        this.isStuned = false
 
         scene.physics.add.existing(this, false)
         scene.add.existing(this)
@@ -21,9 +32,11 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         // criar o sprite e suas animações
         this.createAnimations(texture, animsConfig)
+        this.flipX = this.direction == -1 ? true : false
         // criar os eventos de colisão
-        this.attackZone = scene.add.zone(this.x + this.width, this.y, this.body.width, 32)
+        this.attackZone = scene.add.zone(this.x, this.y, this.width, 32)
         scene.physics.add.existing(this.attackZone)
+        this.attackZone.x += (this.attackZone.width / 2) * this.direction
         this.attackZone.Enemys = []
 
         this.attackZone.on('overlapstart', () => {
@@ -36,7 +49,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         // criar os eventos de ataque
         this.on('animationrepeat', anim => {
             if (anim.key == enums.ATTACK.name) {
-                this.state = enums.WALK.id
+                this.state = enums.IDLE.id
 
                 this.scene.time.addEvent({
                     delay: this.combatConfig.cooldown * 1000,
@@ -63,23 +76,74 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     }
 
     updateState() {
-        if (!this.test) this.test = this.scene.input.keyboard.addKey("D")
-        if (this.test.isDown && this.canAttack) {
-            this.attack()
+        if (this.isStuned) {
+            this.state = enums.STUN.id
         }
-        if (this.colidindo && this.canAttack) {
-            this.canAttack = false
-            this.state = enums.ATTACK.id
+
+        if (this.canAttack) {
+            if (this.colidindo) {
+                this.canAttack = false
+                this.state = enums.ATTACK.id
+            }
+            if (!this.colidindo) {
+                this.state = enums.WALK.id
+            }
         }
+
     }
 
     attack() {
         switch (this.combatConfig.type) {
             case 'single':
                 const enemy = this.attackZone.Enemys[0]
-                
+                enemy.takeDamage(this.combatConfig.damage)
                 break
         }
+    }
+
+    takeDamage(damage) {
+        if (this.isStuned) return
+
+        const oldLife = this.actualLife
+        this.actualLife -= damage
+
+        const stunCheck = this.checkIfStun(oldLife, this.actualLife)
+
+        if (stunCheck[0]) this.stun(stunCheck[1])
+    }
+
+    checkIfStun(oldLife, newLife) {
+        if (newLife <= 0) {
+            return [true, true]
+        }
+
+        for (const stunPoint of this.combatConfig.stunPoints) {
+            if (oldLife > stunPoint && newLife <= stunPoint) {
+                return [true, false]
+            }
+        }
+        return [false, false]
+    }
+
+    stun(toDeath) {
+        this.isStuned = true
+        this.canAttack = false
+        this.scene.time.addEvent({
+            delay: 700,
+            callback: () => {
+                console.log('cabo')
+
+                if (toDeath) {
+                    this.attackZone.destroy()
+                    this.destroy()
+                }
+
+                this.isStuned = false
+                this.canAttack = true
+                
+            },
+            loop: false
+        })
     }
 
     move() {
@@ -88,15 +152,29 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
         this.body.setVelocityX(this.velocity)
 
-        this.attackZone.body.setVelocity(this.body.velocity.x, this.body.velocity.y)
+        this.attackZone.body.setVelocityX(this.velocity)
     }
+
+    stunMove() {
+        this.body.setVelocity(0)
+        this.attackZone.body.setVelocity(0)
+
+        const stunVel = 60 * -this.direction
+
+
+        this.body.setVelocityX(stunVel)
+
+        this.attackZone.body.setVelocityX(stunVel)
+    }
+
 
     checkMovement() {
         switch (this.state) {
             case enums.WALK.id:
                 this.move()
                 break
-            case enums.STOMPED.id:
+            case enums.STUN.id:
+                this.stunMove()
                 break
             default:
                 this.body.setVelocity(0)
@@ -122,7 +200,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     }
 
     checkOverlap() {
-        var bodyList = this.scene.physics.overlapRect(this.attackZone.x, this.attackZone.y, this.attackZone.body.width - this.attackZone.body.width / 2, this.attackZone.body.height)
+        var bodyList = this.scene.physics.overlapRect(this.attackZone.body.x, this.attackZone.body.y, this.attackZone.body.width, this.attackZone.body.height)
         var objectList = []
 
         bodyList.forEach((body) => {
@@ -131,7 +209,9 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             if (obj.team) {
 
                 if (obj.team != this.team) {
-                    objectList.push(obj)
+                    if (!obj.isStuned) {
+                        objectList.push(obj)
+                    }
                 }
             }
 

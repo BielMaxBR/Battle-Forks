@@ -16,19 +16,23 @@ export default class Battle extends Phaser.Scene {
     create() {
         this.meme = new Square(this, 64, 64, 'p1')
 
-        this.algo = this.add.zone(500, 64, 64, 64)
-        this.physics.add.existing(this.algo, false)
-        this.teams.p2.add(this.algo)
-        this.algo.team = 'p2'
+        this.algo = new Square(this, 500, 64, 'p2')
 
         console.log('batalha iniciada')
     }
     update() {
-        this.meme.update()
+        for (const meme of this.teams.p1.getChildren()) {
+            meme.update()
+        }
+        for (const meme of this.teams.p2.getChildren()) {
+            meme.update()
+        }
     }
     createTeams() {
         this.teams = {}
         this.teams.p1 = this.physics.add.group()
         this.teams.p2 = this.physics.add.group()
+        this.teams.p1.runChildUpdate = true
+        this.teams.p2.runChildUpdate = true
     }
 }
