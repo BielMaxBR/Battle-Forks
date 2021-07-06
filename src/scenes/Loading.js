@@ -9,7 +9,7 @@ export default class Loading extends Phaser.Scene {
 
         let progress = this.add.graphics()
 
-        this.load.on('progress', function (value) {
+        this.load.on('progress', (value) => {
 
             progress.clear();
             progress.fillStyle(0xffffff, 1)
@@ -18,7 +18,7 @@ export default class Loading extends Phaser.Scene {
             console.log(`%c Loading: ${Math.floor(value * 100)}%`, 'color:#e8e000;')
         });
 
-        this.load.on('complete', function () {
+        this.load.on('complete', () => {
 
             progress.destroy();
             console.log('%c Loading Complete', 'color:#55ff55;')
