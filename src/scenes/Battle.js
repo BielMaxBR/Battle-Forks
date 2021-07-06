@@ -11,6 +11,8 @@ export default class Battle extends Phaser.Scene {
     // converter pro lado backend da força
     create() {
         this.createTeams()
+        this.data = this.cache.json.get('memes').memes
+        console.table(this.data)
         this.meme = new Square(this, 64, 64, 'p1')
 
         this.algo = new Square2(this, 500, 64, 'p2')

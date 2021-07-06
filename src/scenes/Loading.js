@@ -27,7 +27,9 @@ export default class Loading extends Phaser.Scene {
 
         this.load.setPath('../src/assets/');
 
-        this.load.spritesheet('test', 'testAnim.png', {
+        this.load.json('memes','/jsonData/dataTest.json')
+
+        this.load.spritesheet('test', '/spritesheets/testAnim.png', {
             frameWidth: 64,
             frameHeight: 64,
             startFrame: 0,

@@ -50,7 +50,7 @@
         },
         {
             "name": "square2",
-            "price": 50,
+            "price": 100,
             "combatConfig": {
                 "attackFrames": [
                     8
