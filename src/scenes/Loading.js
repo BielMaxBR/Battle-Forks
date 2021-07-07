@@ -1,6 +1,8 @@
+import {SCENE} from "../utils/constants.js"
+
 export default class Loading extends Phaser.Scene {
     constructor() {
-        super("Loading")
+        super(SCENE.LOADING)
     }
 
     preload() {
@@ -22,7 +24,7 @@ export default class Loading extends Phaser.Scene {
 
             progress.destroy();
             console.log('%c Loading Complete', 'color:#55ff55;')
-            this.scene.start("Battle")
+            this.scene.start(SCENE.BATTLE)
         });
 
         this.load.setPath('../src/assets/');

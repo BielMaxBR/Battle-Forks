@@ -1,9 +1,11 @@
+import {SCENE} from "../utils/constants.js"
+
 import Square from '../objects/memes/Square.js'
 import Square2 from '../objects/memes/Square2.js'
 
 export default class Battle extends Phaser.Scene {
     constructor() {
-        super("Battle")
+        super(SCENE.BATTLE)
     }
     // criar o sistema pra guardar o time e o preço
     // criar o gerador de unidades de acordo com a mão

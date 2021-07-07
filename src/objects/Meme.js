@@ -1,4 +1,5 @@
-import enums from "../utils/enums.js"
+import states from "../utils/states.js"
+import { STUNTIME, STUNSPEED } from "../utils/constants.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
     constructor(scene, x = 0, y = 0, team, combatConfig, spriteConfig) {
@@ -29,8 +30,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.flipX = this.direction == -1 ? true : false
 
         this.on('animationrepeat', anim => {
-            if (anim.key == enums.ATTACK.name) {
-                this.state = enums.IDLE.id
+            if (anim.key == states.ATTACK.name) {
+                this.state = states.IDLE.id
 
                 this.scene.time.addEvent({
                     delay: this.combatConfig.cooldown,
@@ -40,7 +41,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
             }
         })
         this.on('animationupdate', (anim, frame) => {
-            if (anim.key == enums.ATTACK.name) {
+            if (anim.key == states.ATTACK.name) {
                 if (this.combatConfig.attackFrames.indexOf(+frame.textureFrame) != -1) {
                     this.attack()
                 }
@@ -63,7 +64,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     }
 
     setStateAndPhysics() {
-        this.state = enums.WALK.id
+        this.state = states.WALK.id
 
         this.scene.physics.add.existing(this, false)
         this.scene.add.existing(this)
@@ -97,7 +98,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     }
 
     calcAttackFrameRate(duration) {
-        let anim = this.anims.anims.entries[enums.ATTACK.name]
+        let anim = this.anims.anims.entries[states.ATTACK.name]
         let frames = anim.frames.length
 
         anim.frameRate = 1000 / duration * frames
@@ -105,16 +106,16 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
     updateState() {
         if (this.isStuned) {
-            this.state = enums.STUN.id
+            this.state = states.STUN.id
         } else {
 
             if (this.canAttack) {
                 if (this.colidindo) {
                     this.canAttack = false
-                    this.state = enums.ATTACK.id
+                    this.state = states.ATTACK.id
                 }
                 if (!this.colidindo) {
-                    this.state = enums.WALK.id
+                    this.state = states.WALK.id
                 }
             }
         }
@@ -138,29 +139,38 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         const oldLife = this.actualLife
         this.actualLife -= damage
 
-        const stunCheck = this.checkIfStun(oldLife, this.actualLife)
+        const {runStun, isDead} = this.checkIfStun(oldLife, this.actualLife)
 
-        if (stunCheck[0]) this.stun(stunCheck[1])
+        if (runStun) this.stun(isDead)
     }
 
     checkIfStun(oldLife, newLife) {
         if (newLife <= 0) {
-            return [true, true]
+            return {
+                runStun: true,
+                isDead: true
+            }
         }
 
         for (const stunPoint of this.combatConfig.stunPoints) {
             if (oldLife > stunPoint && newLife <= stunPoint) {
-                return [true, false]
+                return {
+                    runStun: true,
+                    isDead: false
+                }
             }
         }
-        return [false, false]
+        return {
+            runStun: false,
+            isDead: false
+        }
     }
 
     stun(toDeath) {
         this.isStuned = true
         this.canAttack = false
         this.scene.time.addEvent({
-            delay: 500,
+            delay: STUNTIME,
             callback: () => {
                 if (toDeath) {
                     this.attackZone.destroy()
@@ -188,7 +198,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.body.setVelocity(0)
         this.attackZone.body.setVelocity(0)
 
-        const stunVel = 200 * -this.direction
+        const stunVel = STUNSPEED * -this.direction
 
 
         this.body.setVelocityX(stunVel)
@@ -199,10 +209,10 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
     checkMovement() {
         switch (this.state) {
-            case enums.WALK.id:
+            case states.WALK.id:
                 this.move()
                 break
-            case enums.STUN.id:
+            case states.STUN.id:
                 this.stunMove()
                 break
             default:
@@ -221,7 +231,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
     }
 
     getAnimation(value, isName) {
-        return Object.values(enums).find(
+        return Object.values(states).find(
             anim => {
                 return (isName ? anim.name : anim.id) == value
 
