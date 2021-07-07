@@ -1,7 +1,6 @@
-import {SCENE} from "../utils/constants.js"
+import { SCENE } from "../utils/constants.js"
 
-import Square from '../objects/memes/Square.js'
-import Square2 from '../objects/memes/Square2.js'
+import Meme from "../objects/Meme.js"
 
 export default class Battle extends Phaser.Scene {
     constructor() {
@@ -11,15 +10,14 @@ export default class Battle extends Phaser.Scene {
     // criar o gerador de unidades de acordo com a mão
 
     // converter pro lado backend da força
+    init({ hands }) {
+        this.createTeams(hands)
+        this.data = this.cache.json.get('memes')
+    }
     create() {
-        this.createTeams()
-        this.data = this.cache.json.get('memes').memes
-        console.table(this.data)
-        this.meme = new Square(this, 64, 64, 'p1')
-
-        this.algo = new Square2(this, 500, 64, 'p2')
-
         console.log('%c batalha iniciada!', 'color:dodgerblue;')
+
+        this.unitFactory('p1',"1")
     }
     update() {
         this.teams.p1.inGame.children.iterate(this.updateMeme)
@@ -30,14 +28,24 @@ export default class Battle extends Phaser.Scene {
         meme.update()
     }
 
-    createTeams() {
+    unitFactory(team, id) {
+        let direction = team == "p1" ? 1 : -1
+
+        let { spriteConfig, combatConfig } = this.data[id]
+
+        let newUnit = new Meme(this, 10, 100, direction, combatConfig, spriteConfig)
+
+        this.teams.p1.inGame.add(newUnit)
+    }
+
+    createTeams(hands) {
         this.teams = {
             p1: {
-                hand: [],
+                hand: hands.p1,
                 inGame: this.physics.add.group()
             },
             p2: {
-                hand: [],
+                hand: hands.p2,
                 inGame: this.physics.add.group()
             }
         }

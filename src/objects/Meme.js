@@ -2,10 +2,10 @@ import states from "../utils/states.js"
 import { STUNTIME, STUNSPEED } from "../utils/constants.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
-    constructor(scene, x = 0, y = 0, team, combatConfig, spriteConfig) {
+    constructor(scene, x = 0, y = 0, direction, combatConfig, spriteConfig) {
         super(scene, x, y, spriteConfig.texture)
 
-        this.createTeamSetDirection(team)
+        this.setDirection(direction)
         this.setAnimationAndCallbacks(spriteConfig)
         this.createCombatConfig(combatConfig)
         this.setStateAndPhysics()
@@ -13,15 +13,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
     }
 
-    createTeamSetDirection(team) {
-        this.team = team
-        this.scene.teams[team].inGame.add(this)
-
-        if (this.team == 'p1') {
-            this.direction = 1
-        } else {
-            this.direction = -1
-        }
+    setDirection(direction) {
+        this.direction = direction
     }
 
     setAnimationAndCallbacks({ texture, frames, animsConfig }) {
@@ -139,7 +132,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         const oldLife = this.actualLife
         this.actualLife -= damage
 
-        const {runStun, isDead} = this.checkIfStun(oldLife, this.actualLife)
+        const { runStun, isDead } = this.checkIfStun(oldLife, this.actualLife)
 
         if (runStun) this.stun(isDead)
     }
