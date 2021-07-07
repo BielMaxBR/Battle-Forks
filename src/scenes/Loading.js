@@ -8,27 +8,8 @@ export default class Loading extends Phaser.Scene {
     }
 
     preload() {
-        let width = this.game.config.width
-        let height = this.game.config.height
-
-        let progress = this.add.graphics()
-
-        this.load.on('progress', (value) => {
-
-            progress.clear();
-            progress.fillStyle(0xffffff, 1)
-            progress.fillRect(0, height / 2, width * value, 60)
-
-            console.log(`%c Loading: ${Math.floor(value * 100)}%`, 'color:#e8e000;')
-        });
-
-        this.load.on('complete', () => {
-
-            progress.destroy();
-            console.log('%c Loading Complete', 'color:#55ff55;')
-        });
-
-        this.load.setPath('../src/assets/');
+        
+        this.load.setPath('../src/assets/')
         this.load.json('memes', '/jsonData/dataTest.json')
 
 
@@ -41,8 +22,30 @@ export default class Loading extends Phaser.Scene {
     }
 
     create() {
+        let width = this.game.config.width
+        let height = this.game.config.height
+
+        this.progress = this.add.graphics()
+
+        this.load.on('progress', (value) => {
+
+            this.progress.clear()
+            this.progress.fillStyle(0xffffff, 1)
+            this.progress.fillRect(0, height / 2, width * value, 60)
+
+            console.log(`%c Loading: ${Math.floor(value * 100)}%`, 'color:#e8e000;')
+        })
+        
+        this.load.on('complete', () => {
+        
+            this.progress.destroy()
+       
+            console.log('%c Loading Complete', 'color:#55ff55;')
+            this.scene.start(SCENE.BATTLE, battleConfig)
+        })
+        
         this.loadMemeAssets(this.getTotalUnits(battleConfig.hands))
-        this.scene.start(SCENE.BATTLE, battleConfig)
+        
     }
 
     getTotalUnits(hands) {
@@ -67,7 +70,7 @@ export default class Loading extends Phaser.Scene {
                 return
             }
             const { name, path, config } = meme.assets.spritesheet
-            console.log(name)
+
             this.load.spritesheet(name, path, config)
         }
         this.load.start()
