@@ -4,5 +4,6 @@ export const STUNSPEED = 200
 
 export const SCENE = {
     LOADING: 'Loading',
-    BATTLE: 'Battle'
+    BATTLE: 'Battle',
+    UI: 'Ui'
 }

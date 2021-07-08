@@ -1,5 +1,6 @@
 import Battle from './src/scenes/Battle.js'
 import Loading from './src/scenes/Loading.js'
+import UI from './src/scenes/Ui.js';
 
 const config = {
     type: Phaser.CANVAS,
@@ -9,7 +10,7 @@ const config = {
         mode: Phaser.Scale.FIT,
     },
     canvas: document.getElementById('canvas'),
-    scene: [Loading, Battle],
+    scene: [Loading, Battle, UI],
     physics: {
         default: 'arcade',
         arcade: {

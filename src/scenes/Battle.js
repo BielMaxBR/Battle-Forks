@@ -5,7 +5,7 @@ import Base from "../prefabs/Base.js"
 
 export default class Battle extends Phaser.Scene {
     constructor() {
-        super(SCENE.BATTLE)
+        super({ key: SCENE.BATTLE })
     }
     // criar o sistema pra guardar o time e o preço
     // criar o gerador de unidades de acordo com a mão
@@ -17,14 +17,22 @@ export default class Battle extends Phaser.Scene {
 
     }
     create() {
+        this.scene.launch(SCENE.UI)
         console.log('%c batalha iniciada!', 'color:dodgerblue;')
 
         this.unitFactory('p1', "1")
         this.time.addEvent({
-            delay: 400,
+            delay: 1000,
             callback: () => {
                 this.unitFactory('p1', "1")
             }
+        })
+        this.time.addEvent({
+            delay: 10,
+            callback: () => {
+                this.cameras.main.scrollX += 1
+            },
+            loop: true
         })
         this.unitFactory('p2', "2")
     }
@@ -37,7 +45,7 @@ export default class Battle extends Phaser.Scene {
         meme.update()
     }
 
-    
+
 
     unitFactory(team, id) {
         let direction = team == "p1" ? 1 : -1
