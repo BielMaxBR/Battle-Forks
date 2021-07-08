@@ -4,7 +4,17 @@ export default class UI extends Phaser.Scene {
     constructor() {
         super({ key: SCENE.UI })
     }
+
+    init(buttonsConfig) {
+        this.buttonsConfig = buttonsConfig
+    }
+
     create() {
-        this.button = this.add.rectangle(100, 10, 30, 30, 0xffffff)
+        console.log('%c Ui carregada', 'color:pink')
+        this.createButtons()
+    }
+
+    createButtons() {
+
     }
 }

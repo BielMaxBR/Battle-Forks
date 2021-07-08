@@ -11,15 +11,16 @@ export default class Battle extends Phaser.Scene {
     // criar o gerador de unidades de acordo com a mão
 
     // converter pro lado backend da força
+
     init({ hands, unitsData }) {
         this.createTeams(hands)
         this.unitsData = unitsData
 
+        const buttonsConfig = this.getButtonsConfig(hands.p1, unitsData)
+        this.scene.launch(SCENE.UI, buttonsConfig)
     }
-    create() {
-        this.scene.launch(SCENE.UI)
-        console.log('%c batalha iniciada!', 'color:dodgerblue;')
 
+    create() {
         this.unitFactory('p1', "1")
         this.time.addEvent({
             delay: 1000,
@@ -35,6 +36,8 @@ export default class Battle extends Phaser.Scene {
             loop: true
         })
         this.unitFactory('p2', "2")
+
+        console.log('%c batalha iniciada!', 'color:dodgerblue;')
     }
     update() {
         this.teams.p1.inGame.children.iterate(this.updateMeme)
@@ -45,7 +48,19 @@ export default class Battle extends Phaser.Scene {
         meme.update()
     }
 
-
+    getButtonsConfig(hand, unitsData) {
+        let config = []
+        for (const id of hand) {
+            const unit = unitsData[id]
+            config.push({
+                id,
+                icon: unit.assets.icon,
+                price: unit.price,
+                cooldown: unit.buyCooldown
+            })
+        }
+        return config
+    }
 
     unitFactory(team, id) {
         let direction = team == "p1" ? 1 : -1

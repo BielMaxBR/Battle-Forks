@@ -1,7 +1,8 @@
 {
     "1": {
-        "name": "square",
+        "name": "square1",
         "price": 50,
+        "buyCooldown": 1000,
         "combatConfig": {
             "attackFrames": [
                 8
@@ -56,12 +57,17 @@
                     "startFrame": 0,
                     "endFrame": 17
                 }
+            },
+            "icon": {
+                "path": "/icons/square-icon.png",
+                "name": "1"
             }
         }
     },
     "2": {
-        "name": "square",
+        "name": "square2",
         "price": 50,
+        "buyCooldown": 1000,
         "combatConfig": {
             "attackFrames": [
                 9
@@ -115,6 +121,10 @@
                     "frameHeight": 64,
                     "startFrame": 0,
                     "endFrame": 17
+                },
+                "icon": {
+                    "path": "/icons/square-icon.png",
+                    "name": "1"
                 }
             }
         }
