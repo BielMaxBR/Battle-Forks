@@ -238,9 +238,9 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         bodyList.forEach((body) => {
             const obj = body.gameObject
 
-            if (obj.team) {
+            if (obj.direction) {
 
-                if (obj.team != this.team) {
+                if (obj.direction != this.direction) {
                     if (!obj.isStuned) {
                         objectList.push(obj)
                     }

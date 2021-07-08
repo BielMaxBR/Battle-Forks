@@ -8,7 +8,7 @@ export default class Loading extends Phaser.Scene {
     }
 
     preload() {
-        
+
         this.load.setPath('../src/assets/')
         this.load.json('memes', '/jsonData/dataTest.json')
 
@@ -25,6 +25,10 @@ export default class Loading extends Phaser.Scene {
         let width = this.game.config.width
         let height = this.game.config.height
 
+        let unitList = this.getTotalUnits(battleConfig.hands)
+
+        this.data = this.cache.json.get('memes')
+
         this.progress = this.add.graphics()
 
         this.load.on('progress', (value) => {
@@ -35,17 +39,31 @@ export default class Loading extends Phaser.Scene {
 
             console.log(`%c Loading: ${Math.floor(value * 100)}%`, 'color:#e8e000;')
         })
-        
+
         this.load.on('complete', () => {
-        
+
             this.progress.destroy()
-       
+
             console.log('%c Loading Complete', 'color:#55ff55;')
+
+            battleConfig.unitsData = this.getUnitsData(unitList)
+
             this.scene.start(SCENE.BATTLE, battleConfig)
         })
-        
-        this.loadMemeAssets(this.getTotalUnits(battleConfig.hands))
-        
+
+        this.loadMemeAssets(unitList)
+
+    }
+
+    getUnitsData(list) {
+        let unitsData = {}
+
+        for (const id of list) {
+            unitsData[id] = this.data[id]
+        }
+
+
+        return unitsData
     }
 
     getTotalUnits(hands) {
@@ -62,9 +80,9 @@ export default class Loading extends Phaser.Scene {
     }
 
     loadMemeAssets(list) {
-        const data = this.cache.json.get('memes')
+
         for (const id of list) {
-            const meme = data[id] ?? {}
+            const meme = this.data[id] || {}
             if (meme === {}) {
                 console.error(`id:${id} not be found on game data`)
                 return
