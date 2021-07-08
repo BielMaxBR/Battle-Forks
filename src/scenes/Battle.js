@@ -14,13 +14,19 @@ export default class Battle extends Phaser.Scene {
     init({ hands, unitsData }) {
         this.createTeams(hands)
         this.unitsData = unitsData
-   
+
     }
     create() {
         console.log('%c batalha iniciada!', 'color:dodgerblue;')
 
         this.unitFactory('p1', "1")
-        this.unitFactory('p2', "1")
+        this.time.addEvent({
+            delay: 400,
+            callback: () => {
+                this.unitFactory('p1', "1")
+            }
+        })
+        this.unitFactory('p2', "2")
     }
     update() {
         this.teams.p1.inGame.children.iterate(this.updateMeme)
@@ -31,12 +37,14 @@ export default class Battle extends Phaser.Scene {
         meme.update()
     }
 
+    
+
     unitFactory(team, id) {
         let direction = team == "p1" ? 1 : -1
 
         let { spriteConfig, combatConfig } = this.unitsData[id]
         let { x, y } = this.teams[team].base
-        let newUnit = new Meme(this, x, y, direction, combatConfig, spriteConfig)
+        let newUnit = new Meme(this, x, y, team, direction, combatConfig, spriteConfig)
 
         this.teams.p1.inGame.add(newUnit)
     }
@@ -44,12 +52,12 @@ export default class Battle extends Phaser.Scene {
     createTeams(hands) {
         this.teams = {
             p1: {
-                base: new Base(this, 10, 100),
+                base: new Base(this, 30, 100, 'p1'),
                 hand: hands.p1,
                 inGame: this.physics.add.group()
             },
             p2: {
-                base: new Base(this, 600, 100),
+                base: new Base(this, 650, 100, 'p2'),
                 hand: hands.p2,
                 inGame: this.physics.add.group()
             }

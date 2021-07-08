@@ -1,6 +1,6 @@
 import { SCENE } from "../utils/constants.js"
 
-let battleConfig = { hands: { p1: [1], p2: [1] } }
+let battleConfig = { hands: { p1: [1,2], p2: [1] } }
 
 export default class Loading extends Phaser.Scene {
     constructor() {

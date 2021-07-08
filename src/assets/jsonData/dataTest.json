@@ -15,7 +15,67 @@
             "cooldown": 400,
             "type": "single",
             "velocity": 90,
-            "attackSpeed": 300
+            "attackTime": 250
+        },
+        "spriteConfig": {
+            "texture": "1",
+            "frames": 4,
+            "animsConfig": {
+                "frameRate": 12,
+                "anims": [
+                    {
+                        "key": "walk",
+                        "start": 0,
+                        "end": 3
+                    },
+                    {
+                        "key": "idle",
+                        "start": 10,
+                        "end": 17
+                    },
+                    {
+                        "key": "attack",
+                        "start": 4,
+                        "end": 9
+                    },
+                    {
+                        "key": "stun",
+                        "start": 0,
+                        "end": 0
+                    }
+                ]
+            }
+        },
+        "assets": {
+            "spritesheet": {
+                "path": "/spritesheets/square.png",
+                "name": "1",
+                "config": {
+                    "frameWidth": 64,
+                    "frameHeight": 64,
+                    "startFrame": 0,
+                    "endFrame": 17
+                }
+            }
+        }
+    },
+    "2": {
+        "name": "square",
+        "price": 50,
+        "combatConfig": {
+            "attackFrames": [
+                9
+            ],
+            "damage": 5,
+            "range": 74,
+            "life": 16,
+            "stunPoints": [
+                8
+            ],
+            "cooldown": 1200,
+            "type": "single",
+            "velocity": 60,
+            "attackTime": 600
         },
         "spriteConfig": {
             "texture": "1",

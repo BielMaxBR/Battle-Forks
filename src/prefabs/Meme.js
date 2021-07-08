@@ -2,10 +2,10 @@ import states from "../utils/states.js"
 import { STUNTIME, STUNSPEED } from "../utils/constants.js"
 
 export default class Meme extends Phaser.GameObjects.Sprite {
-    constructor(scene, x = 0, y = 0, direction, combatConfig, spriteConfig) {
+    constructor(scene, x = 0, y = 0, team, direction = 1, combatConfig, spriteConfig) {
         super(scene, x, y, spriteConfig.texture)
 
-        this.setDirection(direction)
+        this.setDirectionAndTeam(team, direction)
         this.setAnimationAndCallbacks(spriteConfig)
         this.createCombatConfig(combatConfig)
         this.setStateAndPhysics()
@@ -13,7 +13,8 @@ export default class Meme extends Phaser.GameObjects.Sprite {
 
     }
 
-    setDirection(direction) {
+    setDirectionAndTeam(team,direction) {
+        this.team = team
         this.direction = direction
     }
 
@@ -53,7 +54,7 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.canAttack = true
         this.isStuned = false
 
-        this.calcAttackFrameRate(config.attackSpeed)
+        this.calcAttackFrameRate(config.attackTime)
     }
 
     setStateAndPhysics() {
@@ -238,9 +239,9 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         bodyList.forEach((body) => {
             const obj = body.gameObject
 
-            if (obj.direction) {
+            if (obj.team) {
 
-                if (obj.direction != this.direction) {
+                if (obj.team != this.team) {
                     if (!obj.isStuned) {
                         objectList.push(obj)
                     }
