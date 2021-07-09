@@ -10,11 +10,11 @@ export default class UI extends Phaser.Scene {
     }
 
     create() {
-        console.log('%c Ui carregada', 'color:pink')
         this.createButtons()
+        console.log('%c Ui carregada', 'color:pink')
     }
 
     createButtons() {
-
+        this.hotbar = new Hotbar(this,this.buttonsConfig)
     }
 }
