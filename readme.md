@@ -29,3 +29,4 @@
 - depentendo do valor atual, a barra se enche de acordo com a porcentagem
 - a barra pode se encher tanto na horizontal quanto vertical
 - aceita texturas, uma cor base, ou até um degradê
+- possui eventos de `start`, `progress` e `complete`
