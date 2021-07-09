@@ -1,8 +1,15 @@
 import { SCENE } from "../utils/constants.js";
 
+import Hotbar from "../prefabs/ui/Hotbar.js"
+import BaseButton from "../prefabs/ui/BaseButton.js"
+
 export default class UI extends Phaser.Scene {
     constructor() {
         super({ key: SCENE.UI })
+    }
+
+    preload() {
+        this.load.image('baseTexture', '/src/assets/emptyShape.png')
     }
 
     init(buttonsConfig) {
@@ -15,6 +22,11 @@ export default class UI extends Phaser.Scene {
     }
 
     createButtons() {
-        this.hotbar = new Hotbar(this,this.buttonsConfig)
+        this.hotbar = new Hotbar(this, this.buttonsConfig)
+        this.test = new BaseButton(this, 100, 200, {
+            width: 100,
+            height: 70,
+            texture: 'i1'
+        })
     }
 }

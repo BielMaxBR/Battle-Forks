@@ -60,7 +60,7 @@
             },
             "icon": {
                 "path": "/icons/square-icon.png",
-                "name": "1"
+                "name": "i1"
             }
         }
     },
@@ -84,7 +84,7 @@
             "attackTime": 600
         },
         "spriteConfig": {
-            "texture": "1",
+            "texture": "2",
             "frames": 4,
             "animsConfig": {
                 "frameRate": 12,
@@ -115,17 +115,17 @@
         "assets": {
             "spritesheet": {
                 "path": "/spritesheets/square.png",
-                "name": "1",
+                "name": "2",
                 "config": {
                     "frameWidth": 64,
                     "frameHeight": 64,
                     "startFrame": 0,
                     "endFrame": 17
-                },
-                "icon": {
-                    "path": "/icons/square-icon.png",
-                    "name": "1"
                 }
+            },
+            "icon": {
+                "path": "/icons/square-icon.png",
+                "name": "i2"
             }
         }
     }

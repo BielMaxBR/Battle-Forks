@@ -79,9 +79,11 @@ export default class Loading extends Phaser.Scene {
                 console.error(`id:${id} not be found on game data`)
                 return
             }
-            const { name, path, config } = meme.assets.spritesheet
-
-            this.load.spritesheet(name, path, config)
+            const sprite = meme.assets.spritesheet
+            const icon = meme.assets.icon
+            
+            this.load.spritesheet(sprite.name, sprite.path, sprite.config)
+            this.load.image(icon.name, icon.path)
         }
         this.load.start()
     }
