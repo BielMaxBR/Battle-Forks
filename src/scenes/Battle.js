@@ -28,13 +28,7 @@ export default class Battle extends Phaser.Scene {
                 this.unitFactory('p1', "1")
             }
         })
-        this.time.addEvent({
-            delay: 10,
-            callback: () => {
-                this.cameras.main.scrollX += 1
-            },
-            loop: true
-        })
+        
         this.unitFactory('p2', "2")
 
         console.log('%c batalha iniciada!', 'color:dodgerblue;')

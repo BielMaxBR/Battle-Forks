@@ -23,11 +23,11 @@ export default class UI extends Phaser.Scene {
 
     createButtons() {
         this.hotbar = new Hotbar(this, this.buttonsConfig)
-        this.test = new ProgressBar(this, 100, 200, 64, 10, {
+        this.test = new ProgressBar(this, 100, 200, 128, 20, {
             backColor: 0x555555,
             barColor: 0xfffff0,
             borderColor: 0x333333,
-            borderSize: 2,
+            borderSize: 24,
             minValue: 0,
             maxValue: 10,
             value: 0
