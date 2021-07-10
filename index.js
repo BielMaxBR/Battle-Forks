@@ -18,10 +18,22 @@ const config = {
         }
     },
     fps: {
+        min: 15,
         target: 30
     },
     render: {
-        pixelArt: true
+        pixelArt: true,
+        antialias: false,
+        roundPixels: true,
+    },
+    images: {
+        missing: '/src/assets/emptyShape.png'
+    },
+    banner: {
+        text: '#ffffff',
+        background: [
+            '#000000'
+        ]
     }
 }
 document.addEventListener("DOMContentLoaded", () =>

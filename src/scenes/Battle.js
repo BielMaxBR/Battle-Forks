@@ -28,7 +28,7 @@ export default class Battle extends Phaser.Scene {
                 this.unitFactory('p1', "1")
             }
         })
-        
+
         this.unitFactory('p2', "2")
 
         console.log('%c batalha iniciada!', 'color:dodgerblue;')
