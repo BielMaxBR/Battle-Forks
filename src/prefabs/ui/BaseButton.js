@@ -11,11 +11,12 @@ export default class BaseButton extends Phaser.GameObjects.Image {
         this.on('pointerdown', () => {
             this.emit('pressed')
             this.isPressed = true
-        });
+        })
+
         this.on('pointerup', () => {
             this.emit('released')
             this.isPressed = false
-        });
+        })
 
     }
 }
