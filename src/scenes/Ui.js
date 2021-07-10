@@ -23,10 +23,11 @@ export default class UI extends Phaser.Scene {
 
     createButtons() {
         this.hotbar = new Hotbar(this, this.buttonsConfig)
-        this.test = new ProgressBar(this, 0, 200, 640, 100, {
+        this.test = new ProgressBar(this, 100, 200, 64, 10, {
             backColor: 0x555555,
             barColor: 0xfffff0,
-            borderSize: 20,
+            borderColor: 0x333333,
+            borderSize: 2,
             minValue: 0,
             maxValue: 10,
             value: 0
@@ -35,10 +36,8 @@ export default class UI extends Phaser.Scene {
             delay: 1000,
             callback: () => {
                 this.test.addValue(1)
-                
-                console.log(this.test.value)
             },
-            loop:true
+            loop: true
         })
     }
 }

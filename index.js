@@ -16,6 +16,12 @@ const config = {
         arcade: {
             debug: true
         }
+    },
+    fps: {
+        target: 30
+    },
+    render: {
+        pixelArt: true
     }
 }
 document.addEventListener("DOMContentLoaded", () =>
