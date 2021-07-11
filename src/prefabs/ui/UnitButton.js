@@ -25,7 +25,12 @@ export default class UnitButton extends Phaser.GameObjects.Container {
 
         this.bar.setVisible(false)
 
-        this.priceText = scene.add.text(0, height * (3 / 4), this.price, { fontFamily: 'tiny', color: "yellow" })
+        this.priceText = scene.add.text(0, height / 2, this.price, {
+            fontFamily: 'tiny',
+            color: "yellow",
+            stroke: '#000',
+            strokeThickness: 5,
+        })
         this.add(this.priceText)
     }
 
