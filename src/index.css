@@ -6,6 +6,7 @@ body {
   overflow-y: hidden;
   white-space: nowrap;
   display: flex;
+  
 }
 
 canvas {
@@ -16,9 +17,12 @@ canvas {
   margin-left: auto;
   margin-right: auto;
   display: block;
+  
 }
 
 @font-face {
     font-family: tiny;
     src: url('/src/assets//fonts/TinyUnicode.ttf');
+    font-weight:400;
+    font-weight:normal;
 }

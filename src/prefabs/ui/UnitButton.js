@@ -5,9 +5,11 @@ export default class UnitButton extends Phaser.GameObjects.Container {
     constructor(scene, x, y, { texture, width, height, price, cooldown }) {
         super(scene, x, y)
         scene.add.existing(this)
+        scene.updateList.push(this)
 
         this.price = price
         this.cooldown = cooldown
+        this.inCoolDown = true
 
         this.button = new BaseButton(scene, 0, 0, { texture, width, height })
         this.add(this.button)
@@ -21,17 +23,50 @@ export default class UnitButton extends Phaser.GameObjects.Container {
             maxValue: cooldown,
             value: 0
         })
+        this.bar.setVisible(false)
         this.add(this.bar)
 
-        this.bar.setVisible(false)
-
-        this.priceText = scene.add.text(0, height / 2, this.price, {
+        this.priceText = scene.add.text(0, height - 15, this.price, {
             fontFamily: 'tiny',
+            fontSize: 32,
             color: "yellow",
+            shadow: {
+                offsetX: 0,
+                offsetY: 0,
+                color: '#000',
+                blur: 7,
+                stroke: true,
+                fill: true
+            },
             stroke: '#000',
-            strokeThickness: 5,
+            strokeThickness: 3,
+            resolution: 200
         })
         this.add(this.priceText)
+
+        this.button.on('pressed', () => {
+            if (this.inCoolDown) {
+                this.inCoolDown = false
+                this.emit('buy')
+
+                this.timer = scene.time.addEvent({
+                    delay: cooldown,
+                    callback: () => this.inCoolDown = true,
+                    loop: false
+                })
+            }
+        })
+    }
+
+    update() {
+        if (!this.inCoolDown) {
+            this.bar.setVisible(true)
+            this.priceText.setVisible(false)
+            this.bar.setValue(this.timer.getElapsed())
+        } else {
+            this.bar.setVisible(false)
+            this.priceText.setVisible(true)
+        }
     }
 
 }

@@ -6,10 +6,12 @@ import UnitButton from "../prefabs/ui/UnitButton.js"
 export default class UI extends Phaser.Scene {
     constructor() {
         super({ key: SCENE.UI })
+        this.updateList = []
     }
 
     preload() {
         this.load.image('baseTexture', '/src/assets/emptyShape.png')
+        this.cameras.main.setRoundPixels(true)
     }
 
     init(buttonsConfig) {
@@ -21,6 +23,12 @@ export default class UI extends Phaser.Scene {
         console.log('%c Ui carregada', 'color:pink')
     }
 
+    update() {
+        this.updateList.forEach(obj => {
+            obj.update()
+        })
+    }
+
     createButtons() {
         this.hotbar = new Hotbar(this, this.buttonsConfig)
         this.test = new UnitButton(this, 100, 150, {
@@ -28,14 +36,8 @@ export default class UI extends Phaser.Scene {
             width: 64,
             height: 40,
             price: 50,
-            cooldown: 2
+            cooldown: 2000
         })
-        this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                //this.test.addValue(1)
-            },
-            loop: true
-        })
+        this.test.setScale(2)
     }
 }

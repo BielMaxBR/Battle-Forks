@@ -47,12 +47,14 @@ export default class ProgressBar extends Phaser.GameObjects.Container {
 
     setValue(value) {
         this.value = value
+        
+        this.bar.scaleX = Phaser.Math.Percent(this.value, this.minValue, this.maxValue)
 
         if (this.value >= this.maxValue) {
             this.value = this.maxValue
             this.emit('complete')
+            return true
         }
-
-        this.bar.scaleX = Phaser.Math.Percent(this.value, this.minValue, this.maxValue)
+        
     }
 }
