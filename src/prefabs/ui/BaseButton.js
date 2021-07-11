@@ -4,6 +4,9 @@ export default class BaseButton extends Phaser.GameObjects.Image {
 
         scene.add.existing(this)
 
+        this.setDisplaySize(width, height)
+        this.setOrigin(0, 0)
+
         this.setInteractive()
 
         this.isPressed = false

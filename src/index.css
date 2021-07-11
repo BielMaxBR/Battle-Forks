@@ -17,3 +17,8 @@ canvas {
   margin-right: auto;
   display: block;
 }
+
+@font-face {
+    font-family: tiny;
+    src: url('/src/assets//fonts/TinyUnicode.ttf');
+}

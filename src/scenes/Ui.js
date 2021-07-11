@@ -1,7 +1,7 @@
 import { SCENE } from "../utils/constants.js"
 
 import Hotbar from "../prefabs/ui/Hotbar.js"
-import ProgressBar from "../prefabs/ui/ProgressBar.js"
+import UnitButton from "../prefabs/ui/UnitButton.js"
 
 export default class UI extends Phaser.Scene {
     constructor() {
@@ -23,19 +23,17 @@ export default class UI extends Phaser.Scene {
 
     createButtons() {
         this.hotbar = new Hotbar(this, this.buttonsConfig)
-        this.test = new ProgressBar(this, 100, 200, 128, 20, {
-            backColor: 0x555555,
-            barColor: 0xfffff0,
-            borderColor: 0x333333,
-            borderSize: 24,
-            minValue: 0,
-            maxValue: 10,
-            value: 0
+        this.test = new UnitButton(this, 100, 150, {
+            texture: "i1",
+            width: 64,
+            height: 40,
+            price: 50,
+            cooldown: 2
         })
         this.time.addEvent({
             delay: 1000,
             callback: () => {
-                this.test.addValue(1)
+                //this.test.addValue(1)
             },
             loop: true
         })

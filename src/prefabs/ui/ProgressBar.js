@@ -1,5 +1,5 @@
 export default class ProgressBar extends Phaser.GameObjects.Container {
-    constructor(scene, x, y, width, height, { backColor, barColor, borderSize = 0, borderColor = false, minValue = 0, maxValue = 1, value = 1 }) {
+    constructor(scene, x, y, width, height, { backColor, barColor, borderSize = 0, borderColor, minValue = 0, maxValue = 1, value = 1 }) {
         super(scene, x, y)
 
         scene.add.existing(this)
@@ -11,16 +11,16 @@ export default class ProgressBar extends Phaser.GameObjects.Container {
         this.maxValue = maxValue
         this.value = value
 
-        this.background = scene.add.rectangle(x, y, width + borderSize, height + borderSize, backColor)
+        this.background = scene.add.rectangle(0, 0, width + borderSize, height + borderSize, backColor)
 
-        this.background.setStrokeStyle(borderSize, borderColor || backColor)
+        this.background.setStrokeStyle(borderSize, borderColor ?? backColor)
 
         this.background.setOrigin((borderSize / 2) / this.background.width, (borderSize / 2) / this.background.height)
 
         this.add(this.background)
 
-        this.bar = scene.add.rectangle(x, y, width, height, barColor)
-        this.setValue(0)
+        this.bar = scene.add.rectangle(0, 0, width, height, barColor)
+        this.setValue(value)
 
         this.bar.setOrigin(0)
 
