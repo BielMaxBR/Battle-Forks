@@ -14,12 +14,14 @@ export default class UI extends Phaser.Scene {
         this.cameras.main.setRoundPixels(true)
     }
 
-    init(buttonsConfig) {
+    init({buttonsConfig, battleScene}) {
         this.buttonsConfig = buttonsConfig
+        this.battleScene = battleScene
+        console.log(typeof battleScene)
+        this.createButtons()
     }
 
     create() {
-        this.createButtons()
         console.log('%c Ui carregada', 'color:pink')
     }
 
@@ -30,14 +32,11 @@ export default class UI extends Phaser.Scene {
     }
 
     createButtons() {
-        this.hotbar = new Hotbar(this, this.buttonsConfig)
-        this.test = new UnitButton(this, 100, 150, {
-            texture: "i1",
-            width: 64,
-            height: 40,
-            price: 50,
-            cooldown: 2000
+        this.hotbar = new Hotbar(this, 350, 426, {
+            buttonsConfig: this.buttonsConfig,
+            rows: 1,
+            columns: 5,
+            width: 500
         })
-        this.test.setScale(2)
     }
 }

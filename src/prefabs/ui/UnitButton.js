@@ -2,13 +2,15 @@ import BaseButton from './BaseButton.js'
 import ProgressBar from './ProgressBar.js'
 
 export default class UnitButton extends Phaser.GameObjects.Container {
-    constructor(scene, x, y, { texture, width, height, price, cooldown }) {
+    constructor(scene, x, y, { id, team, texture = 'baseTexture', width, height, price, cooldown }) {
         super(scene, x, y)
         scene.add.existing(this)
         scene.updateList.push(this)
 
         this.price = price
         this.cooldown = cooldown
+        this.id = id
+        this.team = team
         this.inCoolDown = true
 
         this.button = new BaseButton(scene, 0, 0, { texture, width, height })
@@ -47,7 +49,7 @@ export default class UnitButton extends Phaser.GameObjects.Container {
         this.button.on('pressed', () => {
             if (this.inCoolDown) {
                 this.inCoolDown = false
-                this.emit('buy')
+                this.emit('buy',this)
 
                 this.timer = scene.time.addEvent({
                     delay: cooldown,

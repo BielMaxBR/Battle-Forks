@@ -16,8 +16,8 @@ export default class Battle extends Phaser.Scene {
         this.createTeams(hands)
         this.unitsData = unitsData
 
-        const buttonsConfig = this.getButtonsConfig(hands.p1, unitsData)
-        this.scene.launch(SCENE.UI, buttonsConfig)
+        const buttonsConfig = this.getButtonsConfig(hands.p1, 'p1', unitsData)
+        this.scene.launch(SCENE.UI, { buttonsConfig, battleScene: this })
     }
 
     create() {
@@ -42,17 +42,18 @@ export default class Battle extends Phaser.Scene {
         meme.update()
     }
 
-    getButtonsConfig(hand, unitsData) {
+    getButtonsConfig(hand, team, unitsData) {
         let config = []
-        for (const id of hand) {
+        hand.forEach(id => {
             const unit = unitsData[id]
             config.push({
                 id,
-                icon: unit.assets.icon,
+                team,
+                icon: unit.assets.icon.name,
                 price: unit.price,
                 cooldown: unit.buyCooldown
             })
-        }
+        })
         return config
     }
 
