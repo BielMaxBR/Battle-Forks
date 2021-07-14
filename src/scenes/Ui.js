@@ -14,7 +14,7 @@ export default class UI extends Phaser.Scene {
         this.cameras.main.setRoundPixels(true)
     }
 
-    init({buttonsConfig, battleScene}) {
+    init({ buttonsConfig, battleScene }) {
         this.buttonsConfig = buttonsConfig
         this.battleScene = battleScene
         console.log(typeof battleScene)
@@ -32,11 +32,12 @@ export default class UI extends Phaser.Scene {
     }
 
     createButtons() {
-        this.hotbar = new Hotbar(this, 350, 426, {
+        this.hotbar = new Hotbar(this, this.game.config.width/2, 426, {
             buttonsConfig: this.buttonsConfig,
             rows: 1,
             columns: 5,
-            width: 500
+            width: 500,
+            margin: 2
         })
     }
 }

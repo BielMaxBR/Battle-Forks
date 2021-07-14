@@ -39,6 +39,7 @@ export default class Battle extends Phaser.Scene {
     }
 
     updateMeme(meme) {
+        if (!meme) return
         meme.update()
     }
 
@@ -66,6 +67,8 @@ export default class Battle extends Phaser.Scene {
 
         this.teams.p1.inGame.add(newUnit)
     }
+
+    remove
 
     createTeams(hands) {
         this.teams = {

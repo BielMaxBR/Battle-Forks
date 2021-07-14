@@ -89,6 +89,15 @@ export default class Meme extends Phaser.GameObjects.Sprite {
         this.checkOverlap()
         this.checkMovement()
         this.checkAnimation()
+        this.checkBorder()
+    }
+
+    checkBorder() {
+        if (this.x > this.scene.game.config.width+this.width || this.x < -this.width) {
+            this.scene.teams[this.team].inGame.remove(this)
+            this.attackZone.destroy()
+            this.destroy()
+        }
     }
 
     calcAttackFrameRate(duration) {
