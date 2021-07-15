@@ -21,17 +21,7 @@ export default class Battle extends Phaser.Scene {
     }
 
     create() {
-        this.unitFactory('p1', "1")
-        this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                this.unitFactory('p1', "1")
-            }
-        })
-
-        this.unitFactory('p2', "2")
-
-        console.log('%c batalha iniciada!', 'color:dodgerblue;')
+        //console.log('%c batalha iniciada!', 'color:dodgerblue;')
     }
     update() {
         this.teams.p1.inGame.children.iterate(this.updateMeme)

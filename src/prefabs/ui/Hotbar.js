@@ -12,10 +12,11 @@ export default class Hotbar extends Phaser.GameObjects.Container {
         for (let r = 0; r < rows; r++) {
             const buttonY = margin + (height * (r + 1)) - (height / 2)
             for (let c = 0; c < columns; c++) {
-                const buttonX = buttonWidth * c + margin * c
+                const buttonX = (buttonWidth * (c + 1) + margin * (c + 1))-(width/2)
+                
                 if (!buttonsConfig[buttonIndex]) continue
                 const { id, team, icon, price, cooldown } = buttonsConfig[buttonIndex]
-                console.log(buttonWidth, buttonX, buttonY, buttonIndex)
+
                 let newbtn = new UnitButton(scene, buttonX, buttonY, {
                     texture: icon,
                     id,
@@ -27,7 +28,7 @@ export default class Hotbar extends Phaser.GameObjects.Container {
                 })
 
                 newbtn.on('buy', btn => {
-                    console.log('%c comprou', 'color:lightyellow;')
+                    //console.log('%c comprou', 'color:lightyellow;')
                     scene.battleScene.unitFactory(btn.team, btn.id)
                 })
 

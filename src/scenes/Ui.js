@@ -17,12 +17,12 @@ export default class UI extends Phaser.Scene {
     init({ buttonsConfig, battleScene }) {
         this.buttonsConfig = buttonsConfig
         this.battleScene = battleScene
-        console.log(typeof battleScene)
+
         this.createButtons()
     }
 
     create() {
-        console.log('%c Ui carregada', 'color:pink')
+        //console.log('%c Ui carregada', 'color:pink')
     }
 
     update() {
